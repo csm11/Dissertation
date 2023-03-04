@@ -1,34 +1,40 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import './App.css'
+import Pokemoncard from './Components/Pokemoncard'
+
+
+
+
 
 function App() {
-  const [count, setCount] = useState(0)
+
+
+const [pokemonCard, setPokemonCard] = useState(false) 
+const URL = "https://api.pokemontcg.io/v2/cards/base1-"
+useEffect(() => {
+  function getPokemon(){ 
+    fetch(`${URL}${Math.floor(Math.random() * 102 +1)}`).then(res => res.json()).then(data => {
+     console.log(data.data) 
+      setPokemonCard(data.data) 
+    })
+  }
+     getPokemon()
+},[])
+
+const getCardPrice = (card) => {
+  const cardPrice = card.tcgplayer.prices.normal !== undefined ? 
+  card.tcgplayer.prices.normal.market : card.tcgplayer.prices['1stEditionHolofoil'] !== undefined 
+  ? card.tcgplayer.prices['1stEditionHolofoil'].market : card.tcgplayer.prices.holofoil.market;
+  return cardPrice;
+}
 
   return (
     <div className="App">
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      {pokemonCard && <Pokemoncard image={pokemonCard.images.small} name={pokemonCard.name} rarity={pokemonCard.rarity} price={getCardPrice(pokemonCard)}/>}
     </div>
   )
+    
 }
 
 export default App

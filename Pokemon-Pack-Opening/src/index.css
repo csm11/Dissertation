@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap');
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -12,6 +13,28 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+}
+/* Inside navigation bar */
+.navigationbar a {
+  float: left;
+  color: #0a0707;
+  text-align: center;
+  padding: 32px 48px;
+  text-decoration: none;
+  font-size: 25px;
+  position: relative;
+  border: none;
+  background-color: #eee;
+  font-size: 32px;
+  font-family: inherit;
+  padding: 2rem 3rem;
+  cursor: pointer;
+}
+
+/* Change colour of links when hovering */
+.navigationbar a:hover {
+  background-color: rgb(0, 183, 255);
+  color: rgba(250, 246, 6, 0.979);
 }
 
 a {
@@ -29,6 +52,7 @@ body {
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  font-family: 'Press Start 2P', sans-serif;
 }
 
 h1 {
@@ -54,6 +78,7 @@ button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
+
 
 @media (prefers-color-scheme: light) {
   :root {
