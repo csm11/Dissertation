@@ -1,13 +1,16 @@
-import React from 'react'
+import React from 'react';
 
-export default function Pokemoncard(props) {
-
+const Pokemoncard = ({ image, name, rarity, price, style }) => {
   return (
-    <div>
-        <img src={props.image} alt= "This is an image"/>
-        <h1>{props.name}</h1>
-        <h2>{props.rarity}</h2>
-        <h3>{props.price}</h3>
+    <div className="card" style={{ ...style, position: 'absolute', center: `${style.zIndex * 20}px` }}>
+      <img src={image} alt={name} />
+      <div className="card-info">
+        <h3>{name}</h3>
+        <p>Rarity: {rarity}</p>
+        <p>Price: ${price.toFixed(2)}</p>
+      </div>
     </div>
-  )
-}
+  );
+};
+
+export default Pokemoncard;
