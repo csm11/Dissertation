@@ -4,10 +4,12 @@ import './App.css';
 import Pokemoncard from './Components/Pokemoncard';
 import BaseSet from './assets/base_set.jpg';
 
+
 function App() {
   const [pokemonCards, setPokemonCards] = useState([]);
   const [showCards, setShowCards] = useState(false);
-  const apiKey = '63959bc3-d85e-4fe2-9d14-61d1d9e57242';
+  const [clickedCard, setClickedCard] = useState(null);
+  const [showImage, setShowImage] = useState(false);
   const URL = "https://api.pokemontcg.io/v2/cards/base1-";
 
   useEffect(() => {
@@ -39,37 +41,46 @@ function App() {
     }
   };
 
-  const handleClick = () => {
-    setShowCards(true);
-    fetchPokemon(); // Call the fetchPokemon function every time the button is clicked
-  };
-
-    const handleImageClick = () => {
-    setShowImage(false);
-  };
+  const handleCardClick = (index) => {
+    setClickedCard(index);
+  }
 
   return (
     <div>
-        <button onClick={handleClick}>Open Pack</button> {/* Add a button that generates a new set of Pokemon cards */}
-        {showCards && (
-    <div className="card-container">
-      <div className="image-container">
-        <img src={BaseSet} alt="BaseSet" />
-      </div>
-        {pokemonCards.map((card, i) => (
-          <Pokemoncard
-            image={card.images.small}
-            name={card.name}
-            rarity={card.rarity}
-            price={getCardPrice(card)}
-            key={i}
-            style={{ zIndex: i* - i }} // Set the z-index to a value that decreases for each subsequent card
-          />
-        ))}
-      </div>
-        )}
+      {showImage ? (
+        <div
+          className="image-container"
+          onClick={() => setShowImage(false)}
+        >
+          <img src={BaseSet} alt="pack" />
+        </div>
+      ) : (
+        <div className="pack-container" onClick={() => setShowCards(true)}>
+          <img src={BaseSet} alt="pack" className="pack-image" />
+          <div className="pack-text">Click to open</div>
+        </div>
+      )}
+
+      {showCards && (
+        <div className="card-container">
+          {pokemonCards.map((card, i) => (
+            <Pokemoncard
+              image={card.images.small}
+              name={card.name}
+              rarity={card.rarity}
+              price={getCardPrice(card)}
+              key={i}
+              style={{
+                zIndex: clickedCard === i ? 1 : (i * -1) + 1,
+                transform: clickedCard === i ? 'scale(1.1)' : 'none',
+                transition: 'transform 0.3s ease-in-out'
+              }}
+              onClick={() => handleCardClick(i)}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
-
 export default App;
