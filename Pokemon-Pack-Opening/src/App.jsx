@@ -4,18 +4,11 @@ import './App.css';
 import Pokemoncard from './Components/Pokemoncard';
 import BaseSet from './assets/base_set.jpg';
 
-
-
-
 function App() {
   const [pokemonCards, setPokemonCards] = useState([]);
   const [showCards, setShowCards] = useState(false);
-  const apiKey = '61a8e710-d3f3-4a14-8e78-8bbf7e371e4d';
-  const setCode = 'base1'; // Replace with the code of the set you want to retrieve
-  const URL = `https://api.pokemontcg.io/v2/cards?set=${setCode}&apiKey=${apiKey}`;
-  fetch(URL)
-  .then(response => response.text())
-  .then(data => console.log(data));
+  const apiKey = '63959bc3-d85e-4fe2-9d14-61d1d9e57242';
+  const URL = "https://api.pokemontcg.io/v2/cards/base1-";
 
   useEffect(() => {
     fetchPokemon();
@@ -30,38 +23,29 @@ function App() {
         : card.tcgplayer.prices.holofoil.market;
     return cardPrice;
   };
-  const debounce = (func, delay) => {
-    let timeoutId;
-    return function (...args) {
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-      timeoutId = setTimeout(() => {
-        func.apply(this, args);
-      }, delay);
-    };
-  };
-  
+
   const fetchPokemon = () => {
     const pokemon = [];
     for (let i = 0; i < 10; i++) {
-      debounce(() => {
-      fetch(`${URL}&page=${Math.floor(Math.random() * 10) + 1}`)
+      fetch(`${URL}${Math.floor(Math.random() * 102 + 1)}`)
         .then((res) => res.json())
         .then((data) => {
           console.log(data.data);
-          pokemon.push(data.data[0]);
+          pokemon.push(data.data);
           if (pokemon.length === 10) {
             setPokemonCards(pokemon);
           }
         });
-      }, 10000)();
     }
   };
 
   const handleClick = () => {
     setShowCards(true);
     fetchPokemon(); // Call the fetchPokemon function every time the button is clicked
+  };
+
+    const handleImageClick = () => {
+    setShowImage(false);
   };
 
   return (
