@@ -10,6 +10,8 @@ function App() {
   const [clickedCard, setClickedCard] = useState(null);
   const [showImage, setShowImage] = useState(true);
   const [showButton, setShowButton] = useState(false);
+  const [showPacks, setShowPacks] = useState(true);
+
   const [points, setPoints] = useState(50); // Initialize points to 50
   const URL_BASE_SET = "https://api.pokemontcg.io/v2/cards/base1-";
   const URL_SILVER_TEMPEST = "https://api.pokemontcg.io/v2/cards/swsh12-";
@@ -19,6 +21,7 @@ function App() {
       return 0; // return 0 if card is undefined
     }
 
+  
     let cardPrice;
     if (card.tcgplayer && card.tcgplayer.prices) {
       cardPrice =
@@ -34,7 +37,9 @@ function App() {
   };
 
   const fetchPokemon = (url) => {
-    const availableCards = Array.from(Array(102).keys());
+    const availableCards = Array.from(Array(102).keys())
+    .filter(cardNumber => cardNumber !== 50 && cardNumber !== 72); // exclude card number 50 and 72
+
     const pokemon = [];
     for (let i = 0; i < 10; i++) {
       const randomIndex = Math.floor(Math.random() * availableCards.length); // select a random index from the availableCards array
@@ -49,28 +54,38 @@ function App() {
           if (pokemon.length === 10) {
             setPokemonCards(pokemon);
             setShowButton(true);
+            setShowPacks(false);
             const totalCardPrices = pokemon.reduce((sum, card) => sum + getCardPrice(card), 0);
             setPoints(points + totalCardPrices - 50);
           }
         });
     }
   };
+  const handleGoBackClick = () => {
+    setShowImage(false);
+    setClickedCard(null);
+    setShowPacks(true); // update showPacks to true when the button is clicked
+  };
+  
 
   const handleBaseSetClick = () => {
     setShowImage(false);
     setClickedCard(null); // Reset clickedCard before fetching new cards
     fetchPokemon(URL_BASE_SET);
+    setShowPacks(false);
+
   };
 
   const handleSilverTempestClick = () => {
     setShowImage(false);
     setClickedCard(null); // Reset clickedCard before fetching new cards
     fetchPokemon(URL_SILVER_TEMPEST);
+    setShowPacks(false);
   };
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      setPoints(points => points + 1);
+      setPoints(points => points + 0);
     }, 1000); // Update points every second
     return () => clearInterval(intervalId); // Cleanup function to clear interval
   }, []);
@@ -78,41 +93,45 @@ function App() {
   return (
     <div>
       <p>Points: {points}</p>
-      <div className="pack-container" onClick={() => handleBaseSetClick()}>
-  <img src={BaseSet} alt="base set pack" className="pack-image" />
-</div>
-<div className="pack-container" onClick={() => handleSilverTempestClick()}>
-  <img src={SilverTempest} alt="silver tempest pack" className="pack-image" />
-</div>
+      {showPacks && (
+  <div>
+    <div className="pack-container" onClick={() => handleBaseSetClick()}>
+      <img src={BaseSet} alt="base set pack" className="pack-image" />
+    </div>
+    <div className="pack-container" onClick={() => handleSilverTempestClick()}>
+      <img src={SilverTempest} alt="silver tempest pack" className="pack-image" />
+    </div>
+  </div>
+)}
+
+
       
 
-
-      {!showImage && (
-        <div className="card-container">
-          {pokemonCards.map((card, i) => (
-            <Pokemoncard
-              image={card.images.small}
-              name={card.name}
-              rarity={card.rarity}
-              price={getCardPrice(card)}
-              key={i}
-              style={{
-                zIndex: pokemonCards.length - i + 10,
-                transform: clickedCard === i ? 'scale(1.1)' : 'none',
-                transition: 'transform 0.3s ease-in-out'
-              }}
-
-              onClick={() => handleCardClick(i)}
-            />
-          ))}
-        
+{pokemonCards.map((card, i) => (
+  card && (
+    <Pokemoncard
+      image={card.images.small}
+      name={card.name}
+      rarity={card.rarity}
+      price={getCardPrice(card)}
+      key={i}
+      style={{
+        zIndex: pokemonCards.length - i + 10,
+        transform: clickedCard === i ? 'scale(1.1)' : 'none',
+        transition: 'transform 0.3s ease-in-out'
+      }}
+      onClick={() => handleCardClick(i)}
+    />
+  )
+))}
           {showButton && ( // Render button only if showButton is true
-            <button onClick={() => setShowImage(true)}>Go Back Packs</button>
+            <button onClick={() => handleGoBackClick()}>Go Back</button>
+
           )}
         </div>
-      )}
-    </div>
-  );
+      )
+
 }
+
 
 export default App;
