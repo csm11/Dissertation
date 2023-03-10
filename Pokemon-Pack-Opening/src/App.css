@@ -40,24 +40,30 @@
 .read-the-docs {
   color: #d30000;
 }
-
 .card-container {
   display: flex;
   flex-wrap: wrap;
-  z-index: -1;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
 }
 
 .pokemon-card {
-  position: relative;
+  width: 10%;
   margin: 10px;
   z-index: 0;
 }
 
-.pokemon-card:hover {
-  z-index: 1;
-  transform: scale(1.1);
-  transition: transform 0.3s ease-in-out;
+@media (max-width: 768px) {
+  .pokemon-card {
+    width: 40%;
+  }
 }
+
+
+
+
+
 .image-container {
   position: absolute;
   top: 50%;
@@ -70,3 +76,54 @@
   width: 200px;
   height: 200px;
 }
+
+#back-btn {
+  display: none !important;
+}
+
+nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  background-color: #333;
+  color: #fff;
+}
+
+.card-container {
+  margin-top: 50px;
+}
+
+nav a {
+  float: left;
+  color: #5cd1ef;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+nav a:hover {
+  background-color: #5dd0f7;
+  color: black;
+}
+
+nav a.active {
+  background-color: #4CAF50;
+  color: white;
+}
+.container {
+  position: relative;
+  height: 100%;
+}
+
+.points {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 10px;
+  font-size: 24px;
+  font-weight: bold;
+}
+  
