@@ -3,7 +3,7 @@ import reactLogo from './assets/react.svg';
 import './App.css';
 import Pokemoncard from './Components/Pokemoncard';
 import BaseSet from './assets/base_set.jpg';
-import SilverTempest from './assets/SilverTempest.jpg';
+import SilverTempest from './assets/SilverTempest.jpeg';
 
 function App() {
   const [pokemonCards, setPokemonCards] = useState([]);
@@ -94,7 +94,7 @@ function App() {
     <div>
       <p>Points: {points}</p>
       {showPacks && (
-  <div>
+  <div style={{ display: 'flex' }}>
     <div className="pack-container" onClick={() => handleBaseSetClick()}>
       <img src={BaseSet} alt="base set pack" className="pack-image" />
     </div>
