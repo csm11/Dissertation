@@ -15,6 +15,7 @@ function App() {
   const [points, setPoints] = useState(50); // Initialize points to 50
   const URL_BASE_SET = "https://api.pokemontcg.io/v2/cards/base1-";
   const URL_SILVER_TEMPEST = "https://api.pokemontcg.io/v2/cards/swsh12-";
+  const apiKey = "63959bc3-d85e-4fe2-9d14-61d1d9e57242";
 
   const getCardPrice = (card) => {
     if (!card) {
@@ -46,7 +47,7 @@ function App() {
       const cardNumber = availableCards[randomIndex]; // get the card number at the selected index
       availableCards.splice(randomIndex, 1); // remove the card number from the availableCards array
 
-      fetch(`${url}${cardNumber}`)
+      fetch(`${url}${cardNumber}?apiKey=${apiKey}`)
         .then((res) => res.json())
         .then((data) => {
           console.log(data.data);
@@ -65,6 +66,7 @@ function App() {
     setShowImage(false);
     setClickedCard(null);
     setShowPacks(true); // update showPacks to true when the button is clicked
+    setPokemonCards([]);
   };
   
 
@@ -73,6 +75,7 @@ function App() {
     setClickedCard(null); // Reset clickedCard before fetching new cards
     fetchPokemon(URL_BASE_SET);
     setShowPacks(false);
+    setPokemonCards([])
 
   };
 
@@ -90,48 +93,41 @@ function App() {
     return () => clearInterval(intervalId); // Cleanup function to clear interval
   }, []);
 
+
   return (
-    <div>
-      <p>Points: {points}</p>
+    <>
+      <div className="points-container">
+        <p>Points: {points}</p>
+      </div>
       {showPacks && (
-  <div style={{ display: 'flex' }}>
-    <div className="pack-container" onClick={() => handleBaseSetClick()}>
-      <img src={BaseSet} alt="base set pack" className="pack-image" />
-    </div>
-    <div className="pack-container" onClick={() => handleSilverTempestClick()}>
-      <img src={SilverTempest} alt="silver tempest pack" className="pack-image" />
-    </div>
-  </div>
-)}
-
-
-      
-
-{pokemonCards.map((card, i) => (
-  card && (
-    <Pokemoncard
-      image={card.images.small}
-      name={card.name}
-      rarity={card.rarity}
-      price={getCardPrice(card)}
-      key={i}
-      style={{
-        zIndex: pokemonCards.length - i + 10,
-        transform: clickedCard === i ? 'scale(1.1)' : 'none',
-        transition: 'transform 0.3s ease-in-out'
-      }}
-      onClick={() => handleCardClick(i)}
-    />
-  )
-))}
-          {showButton && ( // Render button only if showButton is true
-            <button onClick={() => handleGoBackClick()}>Go Back</button>
-
-          )}
+        <div style={{ display: 'flex' }}>
+          <div className="pack-container" onClick={() => handleBaseSetClick()}>
+            <img src={BaseSet} alt="base set pack" className="pack-image" />
+          </div>
+          <div className="pack-container" onClick={() => handleSilverTempestClick()}>
+            <img src={SilverTempest} alt="silver tempest pack" className="pack-image" />
+          </div>
         </div>
-      )
-
-}
-
-
-export default App;
+      )}
+  
+      <div className="card-container">
+        {pokemonCards.map((card, i) => (
+          card && (
+            <Pokemoncard
+              image={card.images.small}
+              name={card.name}
+              rarity={card.rarity}
+              price={getCardPrice(card)}
+              key={i}
+              onClick={() => handleCardClick(i)}
+            />
+          )
+        ))}
+        {showButton && (
+          <button onClick={() => handleGoBackClick()}>Go Back</button>
+        )}
+      </div>
+    </>
+  );
+        }
+  export default App;
