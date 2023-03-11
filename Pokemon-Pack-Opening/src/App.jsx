@@ -12,7 +12,8 @@ function App() {
   const [showImage, setShowImage] = useState(true);
   const [showButton, setShowButton] = useState(false);
   const [showPacks, setShowPacks] = useState(true);
-  const [timeLeft, setTimeLeft] = useState(60);
+  const [timeLeft, setTimeLeft] = useState(90);
+const [timeEnded, setTimeEnded] = useState(false)
   
   const [points, setPoints] = useState(50); // Initialize points to 50
   const URL_BASE_SET = "https://api.pokemontcg.io/v2/cards/base1-"; //base pack
@@ -20,15 +21,27 @@ function App() {
   const apiKey = "63959bc3-d85e-4fe2-9d14-61d1d9e57242";
 
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      setTimeLeft(timeLeft => timeLeft - 1);
-    }, 1000);
+    if (timeLeft === 1) {
+      return; // stop updating the points when timer reaches 0
+    }})
 
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setTimeLeft(timeLeft => {
+        if (timeLeft === 0) {
+          clearInterval(intervalId); // stop the interval
+          // additional actions if needed
+          
+        }
+        return timeLeft -1;
+      });
+    }, 1000);
+  
     return () => clearInterval(intervalId);
   }, []);
-
+  
  
-
+  
   const getCardPrice = (card) => {
     if (!card) {
       return 0; // return 0 if card is undefined
@@ -48,56 +61,50 @@ function App() {
     }
     return cardPrice;
   };
-  const fetchPokemon = (packUrl) => {
-    const availableCards = Array.from(Array(102).keys())
-      .filter(cardNumber => cardNumber !== 50 && cardNumber !== 72);
-  
-    const pokemon = [];
-    for (let i = 0; i < 3; i++) {
-      const randomIndex = Math.floor(Math.random() * availableCards.length);
-      const cardNumber = availableCards[randomIndex];
-      availableCards.splice(randomIndex, 1);
-  
-      fetch(`${packUrl}${cardNumber}?apiKey=${apiKey}`)
-        .then((res) => res.json())
-        .then((data) => {
-          pokemon.push(data.data);
-          if (pokemon.length === 3) {
-            setPokemonCards(pokemon);
-            setShowButton(true);
-            setShowPacks(false);
-            const totalCardPrices = pokemon.reduce((sum, card) => sum + getCardPrice(card), 0);
-            if (packUrl === URL_SILVER_TEMPEST) {
-              setPoints(points + totalCardPrices - 10);
-            } else {
-              setPoints(points + totalCardPrices - 50);
-            }
+const fetchPokemon = (packUrl) => {
+  const availableCards = Array.from(Array(102).keys())
+    //.filter(cardNumber => cardNumber !== 50 && cardNumber !== 72);
+
+  const pokemon = [];
+  for (let i = 0; i < 10; i++) {
+    const randomIndex = Math.floor(Math.random() * availableCards.length);
+    const cardNumber = availableCards[randomIndex];
+    availableCards.splice(randomIndex, 1);
+
+    fetch(`${packUrl}${cardNumber}?apiKey=${apiKey}`)
+      .then((res) => res.json())
+      .then((data) => {
+        pokemon.push(data.data);
+        if (pokemon.length === 10) {
+          setPokemonCards(pokemon);
+          setShowButton(true);
+          setShowPacks(false);
+          const totalCardPrices = pokemon.reduce((sum, card) => sum + getCardPrice(card), 0);
+          if (packUrl === URL_SILVER_TEMPEST) {
+            setPoints(points + totalCardPrices - 10);
+          } else {
+            setPoints(points + totalCardPrices - 50);
           }
-        });
-    }
-  };
-  
-  const handleBaseSetClick = () => {
-    setShowImage(false);
-    setClickedCard(null);
-    fetchPokemon(URL_BASE_SET);
-    setShowPacks(false);
-    setPokemonCards([]);
-  };
-  
-  const handleSilverTempestClick = () => {
-    setShowImage(false);
-    setClickedCard(null);
-    fetchPokemon(URL_SILVER_TEMPEST);
-    setShowPacks(false);
-    setPokemonCards([]);
-  };
-  
+        }
+      });
+  }
+};
 
+const handleBaseSetClick = () => {
+  setShowImage(false);
+  setClickedCard(null);
+  fetchPokemon(URL_BASE_SET);
+  setShowPacks(false);
+  setPokemonCards([]);
+};
 
-
-
-
+const handleSilverTempestClick = () => {
+  setShowImage(false);
+  setClickedCard(null);
+  fetchPokemon(URL_SILVER_TEMPEST);
+  setShowPacks(false);
+  setPokemonCards([]);
+};
 
 
 
@@ -119,10 +126,16 @@ function App() {
   }, []);
 
 
+  useEffect(() => {
+    if (timeLeft === 0) {
+      window.location.href = 'survey.html';
+    }
+  }, [timeLeft]);
   return ( 
-    <div style={{ display: 'absolute', alignItems: 'center', justifyContent: 'center' }}>
-    <h1 style={{ fontSize: '25px' }}>Time left: {timeLeft} seconds</h1>
-  
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '50px' }}>
+    <div style={{ position: 'absolute', top: '200px' }}>
+      <h1 style={{ fontSize: '25px' }}>Time left: {timeLeft} seconds</h1>
+   
     <>
       <div className="points-container">
         <p>Points: {points.toFixed(2)}</p>
@@ -154,14 +167,14 @@ function App() {
         {showButton && (
           <button onClick={() => handleGoBackClick()}>Go Back</button>
         )}
+
+
       </div>
     </>
     </div>
-    
+    </div>
   );
         }
-
-
 
   export default App;
   

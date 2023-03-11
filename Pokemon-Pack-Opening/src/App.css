@@ -41,12 +41,6 @@
   color: #d30000;
 }
 
-.card-container {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-  gap: 10px;
-}
 
 @media screen and (max-width: 768px) {
   .card-container {
@@ -54,6 +48,27 @@
     grid-template-rows: repeat(5, 1fr);
   }
 }
+.card-container {
+  position: absolute;
+  top: 100px; /* adjust this value based on the height of your points system */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1500px;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(186, 255, 255);
+  color: blue;
+  border-radius: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+ 
+  border-image: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet) 1;
+  
+  border-image: linear-gradient(to bottom, #FFDAB9, #8B0000) 1;
+}
+
 
 
 .pokemon-card {
@@ -73,7 +88,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  z-index: 100;
+  z-index: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -97,15 +112,16 @@ nav {
     word-spacing: 10px; 
 }
 
-.card-container {
-  margin-top: 50px;
-  z-index: 1000;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  background-color: rgb(255, 255, 255);
-  color: blue;
+  
+button {
+  transition: all 0.2s ease-in-out;
+}
+
+button:hover {
+  transform: scale(1.1);
+  background-color: #fa0000;
+  color: #fff;
+  box-shadow: 0 0 10px 5px rgba(255, 255, 255, 0.5);
 }
 
 nav a {
@@ -142,17 +158,37 @@ nav a.active {
   border-radius: 50%;
   background: linear-gradient(to bottom, #ff4d4d 50%, #fff 50%);
   display: flex;
+  border-color: #040405;
   justify-content: center;
   align-items: center;
   margin: 0 auto;
   color: #040405;
   position: absolute;
-  top: 90px;
+  z-index: 100000;
+  top: -130px;
   left: 50%;
   transform: translateX(-50%);
+  border: 5px solid #040405;
+ 
+}
+.points-container:hover {
+  animation: spin 1s ease-in-out;
 }
 
-
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+.card:hover {
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  background-image: linear-gradient(45deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.8) 40%, rgba(255,255,255,0.2) 60%, rgba(255,255,255,0.2) 100%);
+  background-size: 200%;
+  animation: shine 1s forwards;
+}
 
 
 .card {
@@ -160,6 +196,9 @@ nav a.active {
   position: relative;
   transform-style: preserve-3d;
   transition: transform 1s;
+  
+  box-shadow: 0 0 5px rgba(0,0,0,0.2);
+  transition: box-shadow 0.3s ease-in-out;
 
   /* Define the animation */
   animation-name: flip-in;
@@ -169,6 +208,11 @@ nav a.active {
   animation-timing-function: ease-in-out;
 }
 
+@keyframes shine {
+  to {
+    background-position: 200%;
+  }
+}
 /* Define the keyframes for the animation */
 @keyframes flip-in {
   0% {
@@ -179,7 +223,7 @@ nav a.active {
   }
 }
 body {
-  background-color: rgb(196, 234, 247);
+  background-color: rgb(255, 255, 255);
 }
 
 

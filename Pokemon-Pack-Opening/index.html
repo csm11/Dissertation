@@ -1,31 +1,67 @@
 <!DOCTYPE html>
-<html lang="en">
+
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dissertation Website</title>
+    <title>Card Pack Opening </title>
+   
+    <style>
+        body {
+          background-color: rgba(251, 11, 11, 0.891);
+}
+
+      h1 {
+        font-size: 50px;
+        text-align: center;
+        margin-top: 50px;
+      }
+      .how-to-box {
+  padding: 20px;
+  max-width: 1000px;
+  max-height: 1000px;
+  margin: 0 auto;
+  font-size: 30px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0,0,0,0.2);
+  border: none;
+  border-image: url(border-image.png) 20 round;
+}
+
+      /* add styles for the back button */
+      .back-button {
+        background-color: #4CAF50;
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 20px;
+        margin: 20px;
+        cursor: pointer;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+      }
+        
+    </style>
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
-      <button id="back-btn" class="hide">Go Back Packs</button>
-      <head>
-        <title>Navigation Bar</title>
-        <style>
-          nav {
-            background-color: #f00000;
-          }
-        </style>
-      </head>
-      <body>
-        <nav>
-          <a href="how-to.html">Instructions</a>
-          <a href="#">Project</a>
-          <a href="#">Points</a>
-        
-          </div>
-        </nav>
+    
+    <div class="how-to-box">
+      <h1>How To Play</h1>
+      <ul>
+        <li>You start off with 60 Points.</li>
+        <li>There are 2 packs to choose from.</li>
+        <li>
+          The left pack needs 50 Points to open, the right pack needs 10 to open. 
+        </li>
+        <li>You have 60 seconds to get as many points as possible</li>
+        <li>Everytime you open a pack the value of each card will be added to your total points </li>
+        <li>The left pack will give you a higher chance of getting high value cards </li>
+        <li>The right pack will give you a lower chance of getting high value cards </li>
+        <li>Once you press the play button, the timer will start</li>
+        <li>Once the timer ends you will be redirected to the Google Survey</li>
+      </ul>
+      <button class="back-button" onclick="window.location.href='Game.html'">Play Game</button>
     </div>
   </body>
 </html>
