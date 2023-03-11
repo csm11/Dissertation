@@ -5,28 +5,40 @@ import Pokemoncard from './Components/Pokemoncard';
 import BaseSet from './assets/base_set.jpg';
 import SilverTempest from './assets/SilverTempest.jpeg';
 
+
 function App() {
   const [pokemonCards, setPokemonCards] = useState([]);
   const [clickedCard, setClickedCard] = useState(null);
   const [showImage, setShowImage] = useState(true);
   const [showButton, setShowButton] = useState(false);
   const [showPacks, setShowPacks] = useState(true);
-
+  const [timeLeft, setTimeLeft] = useState(60);
+  
   const [points, setPoints] = useState(50); // Initialize points to 50
-  const URL_BASE_SET = "https://api.pokemontcg.io/v2/cards/base1-";
-  const URL_SILVER_TEMPEST = "https://api.pokemontcg.io/v2/cards/swsh12-";
+  const URL_BASE_SET = "https://api.pokemontcg.io/v2/cards/base1-"; //base pack
+  const URL_SILVER_TEMPEST = "https://api.pokemontcg.io/v2/cards/swsh12-"; //silver tempest pack
   const apiKey = "63959bc3-d85e-4fe2-9d14-61d1d9e57242";
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setTimeLeft(timeLeft => timeLeft - 1);
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }, []);
+
+ 
 
   const getCardPrice = (card) => {
     if (!card) {
       return 0; // return 0 if card is undefined
     }
 
-  
+  //gets the card price from the api data
     let cardPrice;
     if (card.tcgplayer && card.tcgplayer.prices) {
       cardPrice =
-        card.tcgplayer.prices.normal !== undefined
+        card.tcgplayer.prices.normal !== undefined //checking if value is not defined
           ? card.tcgplayer.prices.normal.market
           : card.tcgplayer.prices['1stEditionHolofoil'] !== undefined
           ? card.tcgplayer.prices['1stEditionHolofoil'].market
@@ -36,56 +48,69 @@ function App() {
     }
     return cardPrice;
   };
-
-  const fetchPokemon = (url) => {
+  const fetchPokemon = (packUrl) => {
     const availableCards = Array.from(Array(102).keys())
-    .filter(cardNumber => cardNumber !== 50 && cardNumber !== 72); // exclude card number 50 and 72
-
+      .filter(cardNumber => cardNumber !== 50 && cardNumber !== 72);
+  
     const pokemon = [];
-    for (let i = 0; i < 10; i++) {
-      const randomIndex = Math.floor(Math.random() * availableCards.length); // select a random index from the availableCards array
-      const cardNumber = availableCards[randomIndex]; // get the card number at the selected index
-      availableCards.splice(randomIndex, 1); // remove the card number from the availableCards array
-
-      fetch(`${url}${cardNumber}?apiKey=${apiKey}`)
+    for (let i = 0; i < 3; i++) {
+      const randomIndex = Math.floor(Math.random() * availableCards.length);
+      const cardNumber = availableCards[randomIndex];
+      availableCards.splice(randomIndex, 1);
+  
+      fetch(`${packUrl}${cardNumber}?apiKey=${apiKey}`)
         .then((res) => res.json())
         .then((data) => {
-          console.log(data.data);
           pokemon.push(data.data);
-          if (pokemon.length === 10) {
+          if (pokemon.length === 3) {
             setPokemonCards(pokemon);
             setShowButton(true);
             setShowPacks(false);
             const totalCardPrices = pokemon.reduce((sum, card) => sum + getCardPrice(card), 0);
-            setPoints(points + totalCardPrices - 50);
+            if (packUrl === URL_SILVER_TEMPEST) {
+              setPoints(points + totalCardPrices - 10);
+            } else {
+              setPoints(points + totalCardPrices - 50);
+            }
           }
         });
     }
   };
+  
+  const handleBaseSetClick = () => {
+    setShowImage(false);
+    setClickedCard(null);
+    fetchPokemon(URL_BASE_SET);
+    setShowPacks(false);
+    setPokemonCards([]);
+  };
+  
+  const handleSilverTempestClick = () => {
+    setShowImage(false);
+    setClickedCard(null);
+    fetchPokemon(URL_SILVER_TEMPEST);
+    setShowPacks(false);
+    setPokemonCards([]);
+  };
+  
+
+
+
+
+
+
+
+
+  //Back button 
   const handleGoBackClick = () => {
     setShowImage(false);
     setClickedCard(null);
     setShowPacks(true); // update showPacks to true when the button is clicked
     setPokemonCards([]);
+    setShowButton(false);
   };
   
-
-  const handleBaseSetClick = () => {
-    setShowImage(false);
-    setClickedCard(null); // Reset clickedCard before fetching new cards
-    fetchPokemon(URL_BASE_SET);
-    setShowPacks(false);
-    setPokemonCards([])
-
-  };
-
-  const handleSilverTempestClick = () => {
-    setShowImage(false);
-    setClickedCard(null); // Reset clickedCard before fetching new cards
-    fetchPokemon(URL_SILVER_TEMPEST);
-    setShowPacks(false);
-  };
-
+//use effect creates an interval may delete
   useEffect(() => {
     const intervalId = setInterval(() => {
       setPoints(points => points + 0);
@@ -94,10 +119,13 @@ function App() {
   }, []);
 
 
-  return (
+  return ( 
+    <div style={{ display: 'absolute', alignItems: 'center', justifyContent: 'center' }}>
+    <h1 style={{ fontSize: '25px' }}>Time left: {timeLeft} seconds</h1>
+  
     <>
       <div className="points-container">
-        <p>Points: {points}</p>
+        <p>Points: {points.toFixed(2)}</p>
       </div>
       {showPacks && (
         <div style={{ display: 'flex' }}>
@@ -128,6 +156,12 @@ function App() {
         )}
       </div>
     </>
+    </div>
+    
   );
         }
+
+
+
   export default App;
+  
