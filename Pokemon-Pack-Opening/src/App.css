@@ -1,44 +1,8 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #d30000;
+:root {
+  --mouse-x: 0;
+  --mouse-y: 0;
+  --viewport-width: 100vw;
+  --viewport-height: 100vh;
 }
 
 
@@ -49,33 +13,28 @@
   }
 }
 .card-container {
-  position: absolute;
-  top: 100px; /* adjust this value based on the height of your points system */
-  left: 50%;
-  transform: translateX(-50%);
-  width: 1500px;
-  z-index: 1;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  align-items: center;
-  background-color: rgb(186, 255, 255);
-  color: blue;
-  border-radius: 20px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
- 
-  border-image: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet) 1;
-  
-  border-image: linear-gradient(to bottom, #FFDAB9, #8B0000) 1;
+  max-width: 100vw;
+  justify-content: space-around;
+  align-items: stretch;
+  padding: 10px;
+  padding-left: 0;
+  margin: 10;
+  opacity: 0;
+  animation: fadeIn 1s ease-in-out forwards;
 }
 
-
-
-.pokemon-card {
-  width: 10%;
-  margin: 10px;
-  z-index: 0;
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
+
 
 @media (max-width: 768px) {
   .pokemon-card {
@@ -83,131 +42,96 @@
   }
 }
 
-.image-container {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  z-index: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 200px;
-  height: 200px;
-}
 
-#back-btn {
-  display: none !important;
-}
 
-nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 65px;
-  background-color: hsl(0, 93%, 44%);
-  color: #d90707;
-  z-index: 100;
-    word-spacing: 10px; 
-}
-
-  
-button {
-  transition: all 0.2s ease-in-out;
-}
-
-button:hover {
-  transform: scale(1.1);
-  background-color: #fa0000;
-  color: #fff;
-  box-shadow: 0 0 10px 5px rgba(255, 255, 255, 0.5);
-}
-
-nav a {
-  float: left;
-  color: #040506;
-  text-align: center;
-  padding: 14px 16px;
-  text-decoration: none;
-  font-size: 20px;
-  z-index: 1;
-  word-spacing: 50;
-  
-}
-
-nav a:hover {
-  background-color: #a0c8d5;
-  color: black;
-  z-index: 1;
-}
-
-nav a.active {
-  background-color: #4CAF50;
-  color: white;
-  z-index: 1;
-}
-.container {
-  position: relative;
-  height: 100%;
-  z-index: 1;
-}
-.points-container {
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  background: linear-gradient(to bottom, #ff4d4d 50%, #fff 50%);
-  display: flex;
-  border-color: #040405;
-  justify-content: center;
-  align-items: center;
-  margin: 0 auto;
-  color: #040405;
-  position: absolute;
-  z-index: 100000;
-  top: -130px;
-  left: 50%;
-  transform: translateX(-50%);
-  border: 5px solid #040405;
- 
-}
-.points-container:hover {
-  animation: spin 1s ease-in-out;
-}
-
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
 .card:hover {
   box-shadow: 0 0 20px rgba(0,0,0,0.5);
-  background-image: linear-gradient(45deg, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0.8) 40%, rgba(255,255,255,0.2) 60%, rgba(255,255,255,0.2) 100%);
+  background-image: linear-gradient(45deg, rgba(246, 243, 243, 0.8) 0%, rgba(255,255,255,0.8) 40%, rgba(255,255,255,0.2) 60%, rgba(255,255,255,0.2) 100%);
   background-size: 200%;
   animation: shine 1s forwards;
 }
 
-
 .card {
-  /* Set up initial state of the card */
   position: relative;
   transform-style: preserve-3d;
-  transition: transform 1s;
-  
+  transition: transform 0.5s ease-out;
+  padding: 3em;
+  display: grid;
+  grid-template-rows: (4, 1fr);
+  justify-items: center;
+  align-items: center;
   box-shadow: 0 0 5px rgba(0,0,0,0.2);
   transition: box-shadow 0.3s ease-in-out;
-
-  /* Define the animation */
   animation-name: flip-in;
   animation-duration: 1s;
   animation-delay: 1s;
   animation-fill-mode: forwards;
   animation-timing-function: ease-in-out;
+  transform: translateZ(0);
+  margin: 1%;
+  
+ 
+}
+.card:hover {
+  transform: rotateX(calc(0deg + ((100vh - var(--mouse-y)) * 0.1))) rotateY(calc(0deg + ((100vw - var(--mouse-x)) * 0.1)));
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  background-image: linear-gradient(45deg, rgba(246, 243, 243, 0.3) 0%, rgba(255,255,255,0.3) 40%, rgba(255,255,255,0.1) 60%, rgba(255,255,255,0.1) 100%);
+  background-size: 200%;
+  animation: shine 1s forwards;
+  box-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #fff, 0 0 40px #00e6e6, 0 0 70px #00e6e6, 0 0 80px #00e6e6, 0 0 100px #00e6e6, 0 0 150px #00e6e6;
+
 }
 
+.card::before {
+  /* Add the shiny glide styles here */
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent 0%, transparent 25%, rgba(255,255,255,0.5) 50%, transparent 75%, transparent 100%);
+  transform: rotate(-45deg);
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.card:hover::before {
+  /* Add the animation for the shiny glide effect here */
+  opacity: 1;
+  animation: shiny-glide 1s linear infinite;
+}
+.card:hover::before {
+  opacity: 1;
+}
+pokemon-card:hover .shine {
+  display: block;
+  animation: shine 1s forwards;
+}
+.card:hover img {
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+
+@keyframes shiny-glide {
+  0% {
+    transform: translateX(-50%) translateY(-50%) rotate(-45deg) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-50%) translateY(-50%) rotate(-45deg) scale(2);
+    opacity: 0;
+  }
+}
+@keyframes glow {
+  from {
+    box-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #00e6e6, 0 0 50px #00e6e6, 0 0 70px #00e6e6;
+  }
+  
+  to {
+    box-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px #00e6e6, 0 0 50px #00e6e6, 0 0 100px #00e6e6;
+  }
+}  
 @keyframes shine {
   to {
     background-position: 200%;
@@ -222,35 +146,315 @@ nav a.active {
     transform: rotateY(0deg);
   }
 }
+
+
+
+
+
+.image-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-500%, -500%);
+  z-index: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50%;
+  height: 50%;
+    size: 5cm;
+  }
+@media screen and (max-width: 768px) {
+  /* Styles for screens with a maximum width of 768px */
+  .image-container {
+    width: 80%;
+    height: 80%;
+  }
+}
+
+
+
+
+
+
+#back-btn {
+  display: none !important;
+}
+
+button {
+  font-size: 1.5rem;
+  letter-spacing: 0.1rem;
+  line-height: 2rem;
+  border: 2px solid red;
+  background-color: #fff200 !important;
+  height: 100%;
+  padding: 10px 20px;
+  margin-top: 10%; 
+  transition: all 0.2s ease-in-out;
+}
+button:hover {
+  background-color: red;
+  border: 2px solid white;
+  color: rgb(255, 0, 0);
+  transform: rotateY(360deg) scale(1.1);
+}
+@media (max-width: 768px) {
+  button {
+    margin-top: 35%;
+  }
+}
+.pack1 {
+  animation: shake1 0.5s ease-in-out;
+}
+
+.pack2 {
+  animation: shake2 0.5s ease-in-out;
+}
+
+@keyframes shake1 {
+  0% { transform: rotate(0deg); }
+  20% { transform: rotate(20deg); }
+  40% { transform: rotate(-20deg); }
+  60% { transform: rotate(15deg); }
+  80% { transform: rotate(-15deg); }
+  100% { transform: rotate(0deg); }
+}
+
+@keyframes shake2 {
+  0% { transform: rotate(0deg); }
+  20% { transform: rotate(-20deg); }
+  40% { transform: rotate(20deg); }
+  60% { transform: rotate(-15deg); }
+  80% { transform: rotate(15deg); }
+  100% { transform: rotate(0deg); }
+}
+
+
+
+.container {
+  margin-top: 50px;
+  padding-bottom: 20px; /* Add this line */
+}
+
+
+.points-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 5px solid black;
+  margin: 0 auto;
+  padding: 0;
+  font-size: 20px; /* adjust font size */
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  line-height: 30px; /* Set line-height equal to height */
+  text-align: center;
+  background: linear-gradient(to bottom, red 50%, white 50%);
+  
+  transition: transform 0.5s; /* add transition to smooth the rotation */
+}
+
+.points-container span {
+  padding: 5px; /* adjust padding */
+}
+
+.points-container:hover {
+  transform: rotate(360deg); /* rotate 360 degrees on hover */
+}
+
+
+
+
+
+
+
+.pack-container {
+  width: 100%;
+  height: auto;
+}
+
+.pack-image {
+  width: 100%;
+  height: auto;
+}
+
+@media screen and (max-width: 480px) {
+  .pack-container {
+    width: 100%;
+  }
+}
+
+  
+  
+
+
+
 body {
   background-color: rgb(255, 255, 255);
-}
-
-
-.image-container{
-  size: 5cm;
-}
-body {
   cursor: url('assets/pokeball.png') 0 0, auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
-.login-form {
-  max-width: 360px;
-  margin: 60px auto;
-  padding: 20px;
+
+.image-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-500%, -500%);
+  z-index: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 50%;
+  height: 50%;
+    size: 5cm;
+  }
+@media screen and (max-width: 768px) {
+  /* Styles for screens with a maximum width of 768px */
+  .image-container {
+    width: 80%;
+    height: 80%;
+  }
 }
 
-.login-form label {
-  display: block;
-  margin: 30px auto;
+
+
+
+
+
+
+
+
+
+
+
+.points-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 5px solid black;
+  margin: 0 auto;
+  padding: 0;
+  font-size: 20px; /* adjust font size */
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  line-height: 30px; /* Set line-height equal to height */
+  text-align: center;
+  background: linear-gradient(to bottom, red 50%, white 50%);
+  
 }
-.login-form span {
-  display: block;
-  margin-bottom: 6px;
+.points-container:hover {
+  transform: rotate(360deg);
 }
-.login-form input{
-  padding: 8px 6px; 
-  font-size: 1em;
-  color: #777;
+
+.points-container span {
+  padding: 5px; /* adjust padding */
+}
+
+
+
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
+  height: 13%;
+  background-color: hsl(60, 14%, 4%);
+  color: #d90707;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+ 
+}
+
+nav a {
+  text-align: center;
+  text-decoration: none;
+  font-size: 100%;
+  word-spacing: 0.5 em;
+  background: linear-gradient(45deg, #fd0000, #00a7ee, #fff200);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  animation: gradient-animation 5s ease-in-out infinite;
+  background-size: 400% 400%;
+  letter-spacing: 3%;
+  padding: 0 10%;
+}
+
+@keyframes gradient-animation {
+  0% {
+    background-position: 0 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0 50%;
+  }
+}
+nav a:hover {
+  background-color: #a0c8d5;
+  color: rgb(246, 242, 7);
+}
+
+nav a.active {
+  background-color: #4CAF50;
+  color: white;
+}
+
+@media screen and (max-width: 480px) {
+  nav {
+    flex-direction: column;
+    align-items: right;
+    height: auto;
+    padding: 1em;
+  }
+  
+  nav a {
+    width: 100%;
+    margin-bottom: -1em;
+    padding: 0.5em 0;
+    text-align: left;
+  }
+}
+
+.pack-container {
+  width: 100%;
+  height: auto;
+}
+
+.pack-image {
+  width: 100%;
+  height: auto;
+}
+
+
+@media screen and (max-width: 480px) {
+  .pack-container {
+    width: 100%;
+  }
+}
+
+  
+  
+
+
+
+body {
+  background-color: rgb(255, 255, 255);
+  cursor: url('assets/pokeball.png') 0 0, auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
